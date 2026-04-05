@@ -1,0 +1,215 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Qualipharma | Regulatory Intelligence</title>
+  <meta name="description" content="Qualipharma front-end para gestión regulatoria, dossiers y validación normativa UE." />
+  <meta name="theme-color" content="#0f4c81" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <div class="ambient ambient-1"></div>
+  <div class="ambient ambient-2"></div>
+
+  <header class="topbar">
+    <div class="brand-wrap">
+      <img src="./assets/logo.png" alt="Qualipharma" class="brand-logo" />
+      <div>
+        <div class="brand-kicker">Regulatory Intelligence</div>
+        <div class="brand-subtitle">EU Pharma Dossier Platform</div>
+      </div>
+    </div>
+    <div class="topbar-actions">
+      <span id="authState" class="badge badge-neutral">No autenticado</span>
+      <button id="btnRefresh" class="btn btn-ghost" type="button">Actualizar</button>
+      <button id="btnLogout" class="btn btn-danger hidden" type="button">Salir</button>
+    </div>
+  </header>
+
+  <main class="shell">
+    <aside class="sidebar">
+      <section class="panel">
+        <h3>Conexión</h3>
+        <label for="backendUrl">Backend URL</label>
+        <input id="backendUrl" type="text" placeholder="http://localhost:8000/api/v1" />
+        <label for="supabaseUrl">Supabase URL</label>
+        <input id="supabaseUrl" type="text" placeholder="https://xxxxx.supabase.co" />
+        <label for="supabaseAnonKey">Supabase Anon Key</label>
+        <input id="supabaseAnonKey" type="password" placeholder="eyJ..." />
+        <div class="row">
+          <button id="btnSaveConfig" class="btn btn-primary" type="button">Guardar</button>
+          <button id="btnTestHealth" class="btn btn-ghost" type="button">Health</button>
+        </div>
+        <p class="hint">Se guarda solo en tu navegador. Ideal para pruebas locales.</p>
+      </section>
+
+      <section class="panel">
+        <h3>Login Supabase</h3>
+        <label for="email">Email</label>
+        <input id="email" type="email" placeholder="usuario@empresa.com" autocomplete="email" />
+        <label for="password">Password</label>
+        <input id="password" type="password" placeholder="••••••••" autocomplete="current-password" />
+        <div class="row">
+          <button id="btnLogin" class="btn btn-primary" type="button">Ingresar</button>
+          <button id="btnRegister" class="btn btn-secondary" type="button">Crear cuenta</button>
+        </div>
+        <p class="hint">El token se manda al backend para activar RLS. Si el usuario no existe, crealo acá.</p>
+      </section>
+
+      <section class="panel">
+        <h3>Acciones rápidas</h3>
+        <button id="btnLoadDemo" class="btn btn-ghost full" type="button">Cargar demo</button>
+        <button id="btnClear" class="btn btn-ghost full" type="button">Limpiar salida</button>
+      </section>
+    </aside>
+
+    <section class="content">
+      <section class="hero">
+        <div class="hero-copy">
+          <span class="eyebrow">Laboratory-grade regulatory workspace</span>
+          <h1>Qualipharma</h1>
+          <p>
+            Plataforma para crear, actualizar y validar dossiers farmacéuticos con trazabilidad
+            documental, citando normativa UE/EMA por artículo.
+          </p>
+          <div class="hero-tags">
+            <span class="tag">EMA source of truth</span>
+            <span class="tag">RLS / Supabase</span>
+            <span class="tag">Audit trail</span>
+            <span class="tag">Versioning</span>
+          </div>
+        </div>
+        <div class="hero-card">
+          <div class="mini-stat">
+            <span>Modo</span>
+            <strong id="currentMode">Local UI</strong>
+          </div>
+          <div class="mini-stat">
+            <span>Backend</span>
+            <strong id="currentBackend">-</strong>
+          </div>
+          <div class="mini-stat">
+            <span>Usuario</span>
+            <strong id="currentUser">Guest</strong>
+          </div>
+        </div>
+      </section>
+
+      <section class="grid stats">
+        <article class="stat-card">
+          <span>Workflow</span>
+          <strong>Crear / Actualizar / Corregir</strong>
+          <p>Ruteo asistido por agente con trazabilidad.</p>
+        </article>
+        <article class="stat-card">
+          <span>Validación</span>
+          <strong>JSON + evidencias</strong>
+          <p>Hallazgos con artículos y recomendaciones.</p>
+        </article>
+        <article class="stat-card">
+          <span>Backoffice</span>
+          <strong>Ingesta EMA / Reindex</strong>
+          <p>Automatización administrativa desde UI.</p>
+        </article>
+      </section>
+
+      <section class="workspace">
+        <article class="panel main-panel">
+          <div class="section-head">
+            <h2>Agente regulatorio</h2>
+            <span class="badge badge-accent" id="agentBadge">Ready</span>
+          </div>
+
+          <label for="agentInput">Input del usuario</label>
+          <textarea id="agentInput" rows="5" placeholder="Ej: Crear dossier para ibuprofeno 400mg mercado EU..."></textarea>
+
+          <label for="agentContext">Contexto del dossier (opcional JSON)</label>
+          <textarea id="agentContext" rows="4" placeholder='{"product_name":"...","market":"EU"}'></textarea>
+
+          <div class="row">
+            <button id="btnDecide" class="btn btn-primary" type="button">Clasificar acción</button>
+            <button id="btnCompare" class="btn btn-ghost" type="button">Comparar dossier</button>
+          </div>
+        </article>
+
+        <article class="panel main-panel">
+          <div class="section-head">
+            <h2>Crear dossier</h2>
+            <span class="badge badge-neutral">POST /dossiers/create</span>
+          </div>
+
+          <div class="two-col">
+            <div>
+              <label for="productName">Producto</label>
+              <input id="productName" type="text" placeholder="Nombre comercial" />
+            </div>
+            <div>
+              <label for="market">Mercado</label>
+              <input id="market" type="text" value="EU" />
+            </div>
+          </div>
+
+          <div class="two-col">
+            <div>
+              <label for="activeSubstance">Sustancia activa</label>
+              <input id="activeSubstance" type="text" placeholder="API" />
+            </div>
+            <div>
+              <label for="strength">Strength</label>
+              <input id="strength" type="text" placeholder="400 mg" />
+            </div>
+          </div>
+
+          <label for="dosageForm">Forma farmacéutica</label>
+          <input id="dosageForm" type="text" placeholder="Comprimidos / cápsulas / solución..." />
+
+          <label for="dossierPayload">Payload del dossier (JSON)</label>
+          <textarea id="dossierPayload" rows="7" placeholder='{"composition":[],"packaging":[],"excipients":[]}'></textarea>
+
+          <div class="row">
+            <button id="btnCreate" class="btn btn-primary" type="button">Crear dossier</button>
+            <button id="btnVersion" class="btn btn-ghost" type="button">Nueva versión</button>
+          </div>
+        </article>
+
+        <article class="panel main-panel">
+          <div class="section-head">
+            <h2>Ingesta normativa / Admin</h2>
+            <span class="badge badge-warn">Protected</span>
+          </div>
+
+          <label for="emaFile">PDF EMA</label>
+          <input id="emaFile" type="file" accept=".pdf" />
+
+          <div class="row">
+            <button id="btnIngestEma" class="btn btn-primary" type="button">Ingestar EMA</button>
+            <button id="btnReindex" class="btn btn-ghost" type="button">Reindexar</button>
+          </div>
+
+          <label for="versionSourceId">ID dossier para nueva versión</label>
+          <input id="versionSourceId" type="text" placeholder="UUID del dossier" />
+
+          <label for="versionPayload">Nueva payload versión (JSON)</label>
+          <textarea id="versionPayload" rows="5" placeholder='{"updated":"..."}'></textarea>
+        </article>
+      </section>
+
+      <section class="panel output-panel">
+        <div class="section-head">
+          <h2>Salida / JSON</h2>
+          <button id="btnCopy" class="btn btn-ghost" type="button">Copiar JSON</button>
+        </div>
+        <pre id="output" class="output">Listo para comenzar.</pre>
+      </section>
+    </section>
+  </main>
+
+  <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+  <script src="./config.js"></script>
+  <script src="./app.js"></script>
+</body>
+</html>

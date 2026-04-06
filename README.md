@@ -15,7 +15,6 @@ DossierOS is a **fullstack SaaS system** designed to manage structured technical
 
 ## 🏗️ System Architecture
 
-```mermaid
 flowchart LR
 A[Frontend UI] -->|HTTP + JWT| B[FastAPI Backend]
 B --> C[Auth Middleware]

@@ -103,7 +103,6 @@ E --> F[Dossier Management API]
 
 <img width="1910" height="862" alt="image" src="https://github.com/user-attachments/assets/3c841452-3bc1-4fc7-81c7-56adddd0bdba" />
 
-<img width="1901" height="871" alt="image" src="https://github.com/user-attachments/assets/56033e0a-1059-4547-a935-e41e4215f08f" />
 
 
 ---

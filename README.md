@@ -78,7 +78,13 @@ E --> F[Dossier Management API]
 - Create dossiers  
 - Structured data handling  
 - Editable content  
-- API-driven workflow  
+- API-driven workflow
+
+<img width="1870" height="784" alt="image" src="https://github.com/user-attachments/assets/e076925d-c4aa-4285-90e5-3753cf7d9720" />
+
+<img width="1906" height="867" alt="image" src="https://github.com/user-attachments/assets/ee540d60-b7d7-497f-87f3-6ae223c81395" />
+
+
 
 ### API Design
 - Modular endpoints  
@@ -90,10 +96,15 @@ E --> F[Dossier Management API]
 - Middleware validation layer  
 - Stateless request handling  
 
-### Frontend (Demo UI)
+### Frontend 
 - Full UX flows (login, dashboard, editor)  
 - Mocked state for product simulation  
 - Built for presentation and usability testing  
+
+<img width="1910" height="862" alt="image" src="https://github.com/user-attachments/assets/3c841452-3bc1-4fc7-81c7-56adddd0bdba" />
+
+<img width="1901" height="871" alt="image" src="https://github.com/user-attachments/assets/56033e0a-1059-4547-a935-e41e4215f08f" />
+
 
 ---
 
@@ -106,6 +117,8 @@ The system is designed to support:
 - Smart suggestions and automation  
 
 > Currently abstracted and ready for integration with LLM-based services.
+
+<img width="1893" height="822" alt="image" src="https://github.com/user-attachments/assets/55e81cb9-9996-46cb-bf4a-0142e02f7094" />
 
 ---
 

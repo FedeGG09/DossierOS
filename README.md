@@ -1,5 +1,8 @@
 # 🧠 DossierOS — End-to-End SaaS for Dossier Management
 
+<img width="1880" height="839" alt="image" src="https://github.com/user-attachments/assets/c24e9405-6cb9-4723-b31a-7fdaa30eaae1" />
+
+
 > Fullstack SaaS system with FastAPI backend, Supabase JWT authentication, custom auth middleware, AI-powered workflows, and decoupled frontend. Includes interactive demo UI.
 
 🌐 Demo UI: https://dossieros.lovable.app/
